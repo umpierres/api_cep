@@ -1,24 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import useCep from './hooks/useCep';
 
 function App() {
+  const [searchCep, setSearchCep] = useState('')
+  const cep = useCep(searchCep)
+
+  const handleCepChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchCep(event.target.value);
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div> 
+        <input type="text" value={searchCep} onChange={handleCepChange} placeholder="Pesquisar cep" />
+      </div>
+           <div>
+
+           {cep.cep ? (
+        <>
+          <p>{cep.cep}</p>
+          <p>{cep.bairro}</p>
+          <p>{cep.localidade}</p>
+          <p>{cep.uf}</p>
+        </>
+      ) : (
+        <p>Cep inválido</p>
+      )}
+
+  
+</div>
     </div>
   );
 }
