@@ -50,11 +50,12 @@ function App() {
   },[isSearchingCep])
 
   const searchByCep = () => {
-  if (!isSearchingCep) {
+  if (isSearchingCep) {
     const apiData = async () => {
       try {
         const response = await api.get(`/${searchCep}/json/`);
-        if (response.data.cep) {
+        if (response.data) {
+          console.log(response.data)
           setCepData(response.data);
         } else {
           alert('CEP não encontrado. Verifique se o CEP está correto e tente novamente.');
@@ -81,8 +82,8 @@ const searchByAddress = () => {
     const apiData = async () => {
       try {
         const response = await api.get(`/${formattedState}/${formattedCity}/${formattedStreet}/json/`);
-        if (response.data.cep) {
-          setAddress(response.data);
+        if (response.data[0].cep) {
+          setAddress(response.data[0]);
           setCepData({
             cep: '',
             logradouro: '',
@@ -201,7 +202,7 @@ const searchByAddress = () => {
                 <Typography variant="body1">Estado: {address.uf}</Typography>
               </>
             ) : (
-              <Typography variant="body1">Cep inválido</Typography>
+              <Typography variant="body1">Cep Inválido</Typography>
             )
           )}
         </div>
