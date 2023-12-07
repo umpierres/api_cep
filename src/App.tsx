@@ -80,7 +80,6 @@ const searchByAddress = () => {
 
     const apiData = async () => {
       try {
-        console.log(`/${formattedState}/${formattedCity}/${formattedStreet}/json/`);
         const response = await api.get(`/${formattedState}/${formattedCity}/${formattedStreet}/json/`);
         if (response.data.cep) {
           setAddress(response.data);
@@ -94,7 +93,6 @@ const searchByAddress = () => {
         } else {
           alert('Endereço não encontrado. Verifique se os dados estão corretos e tente novamente.');
         }
-        console.log(response.data);
       } catch (error) {
         console.error('Error:', error);
       }
