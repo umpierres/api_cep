@@ -48,38 +48,62 @@ function App() {
       uf: ''
     })
   },[isSearchingCep])
+
   const searchByCep = () => {
+  if (!isSearchingCep) {
     const apiData = async () => {
       try {
         const response = await api.get(`/${searchCep}/json/`);
-        setCepData(response.data);
+        if (response.data.cep) {
+          setCepData(response.data);
+        } else {
+          alert('CEP não encontrado. Verifique se o CEP está correto e tente novamente.');
+        }
       } catch (error) {
         console.error('Error:', error);
       }
     };
     apiData();
-  };
+  }
+};
 
-  const searchByAddress = () => {
+const searchByAddress = () => {
+  if (!isSearchingCep) {
     if (!state || !city || !street) {
-      console.error('Preencha todos os campos obrigatórios.');
+      alert('Preencha todos os campos obrigatórios.');
       return;
     }
-  
+
     const formattedState = state.trim().toUpperCase();
     const formattedCity = city.trim();
     const formattedStreet = street.trim().replace('Rua', '').replace('Avenida', '');
-  
+
     const apiData = async () => {
       try {
+        console.log(`/${formattedState}/${formattedCity}/${formattedStreet}/json/`);
         const response = await api.get(`/${formattedState}/${formattedCity}/${formattedStreet}/json/`);
-        setAddress(response.data[0]);
+        if (response.data.cep) {
+          setAddress(response.data);
+          setCepData({
+            cep: '',
+            logradouro: '',
+            bairro: '',
+            localidade: '',
+            uf: ''
+          });
+        } else {
+          alert('Endereço não encontrado. Verifique se os dados estão corretos e tente novamente.');
+        }
+        console.log(response.data);
       } catch (error) {
         console.error('Error:', error);
       }
     };
+
     apiData();
-  };
+  }
+};
+
   
 
   const handleCepChange = (event: React.ChangeEvent<HTMLInputElement>) => {
