@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import api from "../config/services/api";
 
-interface CepPropeties {
-    cep: string,
-    logradouro: string,
-    bairro: string,
-    localidade: string,
-    uf: string
+interface CepProperties {
+  cep: string;
+  logradouro: string;
+  bairro: string;
+  localidade: string;
+  uf: string;
 }
 
 const useCep = (cepNumber: string) => {
-  const [cepData, setCepData] = useState<CepPropeties>({
+  const [cepData, setCepData] = useState<CepProperties>({
     cep: '',
     logradouro: '',
     bairro: '',
@@ -18,19 +18,25 @@ const useCep = (cepNumber: string) => {
     uf: ''
   });
 
-    useEffect(() => {
-        const apiData = async () => {
-            try{
-                const response = await api.get(`/${cepNumber}/json/`)
-                setCepData(response.data)
-            } catch(error){
-                console.error('Error:', error);
-            }
-        }
-    apiData();
+  useEffect(() => {
+    const apiData = async () => {
+      try {
+        const response = await api.get(`/${cepNumber}/json/`);
 
-    }, [cepNumber])
-    return cepData;
-}
+        if (response.data && response.data.cep) {
+          setCepData(response.data);
+        } 
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
 
-export default useCep
+    if (cepNumber.length === 8) {
+      apiData();
+    }
+  }, [cepNumber]);
+
+  return cepData;
+};
+
+export default useCep;
