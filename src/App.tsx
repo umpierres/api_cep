@@ -112,6 +112,7 @@ function App() {
           label="Pesquisar por CEP"
         />
 
+<<<<<<< HEAD
         {isSearchingCep ? (
           <>
             <TextField
@@ -185,6 +186,11 @@ function App() {
         </div>
       </Box>
     </Container>
+=======
+  
+    </div>
+    </div>
+>>>>>>> 48c355e1bb420a62814e8431a584bf55eaacf25f
   );
 }
 
